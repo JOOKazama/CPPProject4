@@ -314,5 +314,6 @@ int main(void)
 	a.CalcGofF();
 	a.setData(4, 16, 15);
 	a.writeToCout();
+	
 	system("pause");
 }
