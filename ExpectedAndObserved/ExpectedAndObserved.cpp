@@ -8,141 +8,134 @@
 
 using namespace std;
 
-class CDigit
+class Digit
 {
 private:
 
-	int m_iDigit;
+	int digit;
 
 public:
 
-	CDigit() {};
-	CDigit(int val) { m_iDigit=val; }
-	CDigit(CDigit &a) { m_iDigit=a.m_iDigit; }
-	int GetDigit() const { return m_iDigit; }
-	void SetDigit(const int val) { m_iDigit=val; }
-	virtual void Output(ostream& toStream) { toStream<<"The value is: "<<m_iDigit<<endl<<endl; }
-	virtual void SetSome(const int val)=0;
-	virtual bool less(const CDigit* pDigit)=0;
-	virtual int GetSome() const=0;
-	friend class CGoodnessOfFit;
+	Digit() {};
+	Digit(int digit) { this->digit=digit; }
+	Digit(Digit &Digit_main) { this->digit=Digit_main.digit; }
+	int get_digit() const { return digit; }
+	void set_digit(const int digit) { this->digit=digit; }
+	virtual void output(ostream& output) { output<<"The value is: "<<digit<<endl<<endl; }
+	virtual void set_virtual(const int value)=0;
+	virtual bool less_than_digit(const Digit* digit)=0;
+	virtual int get_virtual() const=0;
 };
 
-class CExpected:public CDigit
+class Expected_Frequency: public Digit
 {
 	private:
 
-		int m_iExpFreq;
+		int expected_frequency;
 
 	public:
 
-		CExpected() {};
+		Expected_Frequency() {};
 
-		CExpected(int digit, int val):CDigit(digit) { m_iExpFreq=val; }
-		CExpected(const CExpected& a) { m_iExpFreq=a.m_iExpFreq; }
-		int GetExpected() const { return m_iExpFreq; }
-		int GetSome() const { return m_iExpFreq; }
-		void SetExpected(const int val) { m_iExpFreq=val; }
-		void Output(ostream& toStream) { toStream<<"The value is: "<<m_iExpFreq<<endl<<endl; }
-		void SetSome(const int val) { m_iExpFreq=val; }
-		int operator =(CExpected const &a) { m_iExpFreq=a.m_iExpFreq; }
-		bool operator ==(CExpected const &a) { if (m_iExpFreq==a.m_iExpFreq) return true; }
+		Expected_Frequency(int digit, int expected_frequency): Digit(digit) { this->expected_frequency=expected_frequency; }
+		Expected_Frequency(const Expected_Frequency& expected_frequency_main) { this->expected_frequency=expected_frequency_main.expected_frequency; }
+		int get_expected() const { return this->expected_frequency; }
+		int get_virtual() const { return this->expected_frequency; }
+		void set_expected(const int expected_frequency) { this->expected_frequency=expected_frequency; }
+		void set_virtual(const int expected_frequency) { this->expected_frequency = expected_frequency; }
+		void output(ostream& output) { output<<"The value is: "<<expected_frequency<<endl<<endl; }
+		int operator =(Expected_Frequency const &expected_frequency_main) { this->expected_frequency=expected_frequency_main.expected_frequency; }
+		bool operator ==(Expected_Frequency const &expected_frequency_main) { if (this->expected_frequency==expected_frequency_main.expected_frequency) return true; }
 
-		bool less(const CDigit* pDigit)
+		bool less_than_digit(const Digit* digit)
 		{
-			if(m_iExpFreq>pDigit->GetSome()) return true;
-			else if(m_iExpFreq<pDigit->GetSome()) return false;
+			if(expected_frequency>digit->get_virtual()) return true;
+			else if(expected_frequency<digit->get_virtual()) return false;
 		}
 
-		friend istream &operator >>(istream &input, CExpected& a)
+		friend istream &operator >>(istream &input, Expected_Frequency& expected_frequency_main)
 		{
-			input>>a.m_iExpFreq;
+			input>>expected_frequency_main.expected_frequency;
 			return input;
 		}
 
-		friend ostream &operator <<(ostream &output, const CExpected& a)
+		friend ostream &operator <<(ostream &output, const Expected_Frequency& expected_frequency_main)
 		{
-			output<<a.GetExpected();
+			output<<expected_frequency_main.get_expected();
 			return output;
 		}
-
-		friend class CGoodnessOfFit;
 };
 
-class CObserved:public CDigit
+class Observed_Frequency: public Digit
 {
 private:
 
-	int m_iObsFreq;
+	int observed_frequency;
 
 public:
 
-	CObserved() {};
+	Observed_Frequency() {};
 
-	CObserved(int digit, int val):CDigit(digit) { m_iObsFreq=val; }
-	CObserved(const CObserved& a) { m_iObsFreq=a.m_iObsFreq; }
-	int GetObserved() const { return m_iObsFreq; }
-	int GetSome() const { return m_iObsFreq; }
-	void SetObserved(const int val) { m_iObsFreq=val; }
-	void Output(ostream& toStream) { toStream<<"The value is: "<<m_iObsFreq<<endl<<endl; }
-	void SetSome(const int val) { m_iObsFreq = val; }
-	int operator =(CObserved const &a) { m_iObsFreq = a.m_iObsFreq; }
-	bool operator ==(CObserved const &a) { if (m_iObsFreq == a.m_iObsFreq) return true; }
+	Observed_Frequency(int digit, int val):Digit(digit) { this->observed_frequency=val; }
+	Observed_Frequency(const Observed_Frequency& observed_frequency_main) { observed_frequency=observed_frequency_main.observed_frequency; }
+	int get_observed() const { return observed_frequency; }
+	int get_virtual() const { return this->observed_frequency; }
+	void set_observed(const int observed_frequency) { this->observed_frequency=observed_frequency; }
+	void set_virtual(const int observed_frequency) { this->observed_frequency=observed_frequency; }
+	void output(ostream& output) { output<<"The value is: "<<observed_frequency<<endl<<endl; }
+	int operator =(Observed_Frequency const &observed_frequency_main) { observed_frequency=observed_frequency_main.observed_frequency; }
+	bool operator ==(Observed_Frequency const &observed_frequency_main) { if(observed_frequency==observed_frequency_main.observed_frequency) return true; }
 
-	bool less(const CDigit* pDigit)
+	bool less_than_digit(const Digit* digit)
 	{
-		if(m_iObsFreq>pDigit->GetSome()) return true;
-		else if(m_iObsFreq<pDigit->GetSome()) return false;
+		if(observed_frequency>digit->get_virtual()) return true;
+		else if(observed_frequency<digit->get_virtual()) return false;
 	}
 
-	friend istream &operator >>(istream &input, CObserved& a)
+	friend istream &operator >>(istream &input, Observed_Frequency& observed_frequency_main)
 	{
-		input>>a.m_iObsFreq;
+		input>>observed_frequency_main.observed_frequency;
 		return input;
 	}
 
-	friend ostream &operator <<(ostream &output, const CObserved& a)
+	friend ostream &operator <<(ostream &output, const Observed_Frequency& observed_frequency_main)
 	{
-		output<<a.GetObserved();
+		output<<observed_frequency_main.get_observed();
 		return output;
 	}
-
-	friend class CGoodnessOfFit;
 };
 
-class CGoodnessOfFit
+class GoodnessOfFit
 {
 	private:
 
-		list<CDigit*>m_IExp;
-		list<CDigit*>m_IObs;
-		int m_iTotalFreqDiff;
-		double m_dChiCalc;
-		double m_dChiAlpha;
+		list<Digit*>expected_frequency;
+		list<Digit*>observed_frequency;
+		int total_frequency_difference;
+		double statistical_grade;
 
 	public:
 
-		CGoodnessOfFit(const string& strFileNameExp, const string& strFileNameObs)
+		GoodnessOfFit(const string& str_file_name_exp, const string& str_file_name_obs)
 		{
-			ifstream myfile(strFileNameExp.c_str());
-			ifstream myfile1(strFileNameObs.c_str());
-			int a, b;
+			ifstream my_file(str_file_name_exp.c_str());
+			ifstream my_file1(str_file_name_obs.c_str());
+			int first_value, second_value;
 
-			myfile.exceptions(ifstream::badbit);
-			myfile1.exceptions(ifstream::badbit);
+			my_file.exceptions(ifstream::badbit);
+			my_file1.exceptions(ifstream::badbit);
 
 			try
 			{
-				if (myfile.is_open())
+				if (my_file.is_open())
 				{
-					while(!myfile.eof())
+					while(!my_file.eof())
 					{
-						myfile>>a>>b;
-						CDigit* a1=new CExpected(a, b);
-						m_IExp.push_back(a1);
+						my_file>>first_value>>second_value;
+						Digit* digit=new Expected_Frequency(first_value, second_value);
+						expected_frequency.push_back(digit);
 					}
-
-					myfile.close();
+					my_file.close();
 				}
 
 				else
@@ -156,16 +149,16 @@ class CGoodnessOfFit
 
 			try
 			{
-				if(myfile1.is_open())
+				if(my_file1.is_open())
 				{
-					while(!myfile1.eof())
+					while(!my_file1.eof())
 					{
-						myfile1>>a>>b;
-						CDigit* a1=new CObserved(a, b);
-						m_IObs.push_back(a1);
+						my_file1>>first_value>>second_value;
+						Digit* digit=new Observed_Frequency(first_value, second_value);
+						observed_frequency.push_back(digit);
 					}
 
-					myfile1.close();
+					my_file1.close();
 				}
 
 				else
@@ -179,140 +172,130 @@ class CGoodnessOfFit
 
 		}
 
-		void calcTotalFreqDiff()
+		void calculated_total_frequency_difference()
 		{
-			list<CDigit*>::iterator i;
-			int sum=0, sum1=0;
+			list<Digit*>::iterator i;
+			int sum_expected_frequency=0, sum_observed_frequency=0;
 
-			for (i=m_IExp.begin(); i!=m_IExp.end(); i++) { sum+=(*i)->GetSome(); }
-			for (i=m_IObs.begin(); i!=m_IObs.end(); i++) { sum1+=(*i)->GetSome(); }
+			for (i=expected_frequency.begin(); i!=expected_frequency.end(); i++) { sum_expected_frequency+=(*i)->get_virtual(); }
+			for (i=observed_frequency.begin(); i!=observed_frequency.end(); i++) { sum_observed_frequency+=(*i)->get_virtual(); }
 
-			m_iTotalFreqDiff=sum-sum1;
-			cout<<"The difference is: "<<m_iTotalFreqDiff<<endl<<endl;
+			total_frequency_difference=sum_expected_frequency-sum_observed_frequency;
+			cout<<"The difference is: "<<total_frequency_difference <<endl<<endl;
 		}
 
-		void SetChiAlpha(double ChiValue) { m_dChiAlpha=ChiValue; }
-
-		bool CalcChi()
+		bool calculate_statistical_grade()
 		{
-			list<CDigit*>::iterator i;
+			list<Digit*>::iterator i;
 			double sum=0, sum1=0, sum2=0, sum3=0, sum4=0, sum5=0;
 
-			for(i=m_IExp.begin(); i!=m_IExp.end(); i++) { sum+=(*i)->GetSome(); }
-			for(i=m_IObs.begin(); i!=m_IObs.end(); i++) { sum1+=(*i)->GetSome(); }
+			for(i=expected_frequency.begin(); i!=expected_frequency.end(); i++) { sum+=(*i)->get_virtual(); }
+			for(i=observed_frequency.begin(); i!=observed_frequency.end(); i++) { sum1+=(*i)->get_virtual(); }
 
 			sum2+=sum+sum1;
 			sum3=sum1-sum;
 			sum4=sum2*sum3;
 			sum5=pow(sum4, 2);
 
-			m_dChiCalc=sqrt(sum5/sum);
+			statistical_grade=sqrt(sum5/sum);
 
-			if(m_dChiCalc<=0) return false;
+			if(statistical_grade<=0) return false;
 			else return true;
 		}
 
-		bool CalcGofF()
+		bool check_statistical_grade()
 
 		{
-			if(m_dChiCalc<=0) return false;
-
+			if(statistical_grade<=0) return false;
 			else
 			{
-				cout<<"The statistical grade is: "<<m_dChiCalc<<endl<<endl;
+				cout<<"The statistical grade is: "<<statistical_grade <<endl<<endl;
 				return true;
 			}
 		}
 
-		double Get_m_dChiCalc() { return m_dChiCalc; }
-		double Get_m_dChiAlpha() { return m_dChiAlpha; }
+		double get_statistical_grade() { return statistical_grade; }
 
-		static double getData(CGoodnessOfFit &a)
+		void set_data(int digit, int expected_frequency1, int observed_frequency1)
 		{
-			a.Get_m_dChiCalc();
-			a.Get_m_dChiAlpha();
-		}
-
-		void setData(int iDigit, int iExpected, int iObserved)
-		{
-			while(iDigit<=0)
+			while(digit<=0)
 			{
 				cout<<"Enter a iDigit bigger than 0: ";
-				cin>>iDigit;
+				cin>>digit;
 			}
 
-			while(iExpected<=0)
+			while(expected_frequency1<=0)
 			{
 				cout<<"Enter a iExpected bigger than 0: ";
-				cin>>iExpected;
+				cin>>expected_frequency1;
 			}
 
-			while(iObserved<=0)
+			while(observed_frequency1<=0)
 			{
 				cout<<"Enter a iObserved bigger than 0: ";
-				cin>>iObserved;
+				cin>>observed_frequency1;
 			}
 
-			list<CDigit*>::iterator i, i1;
+			list<Digit*>::iterator i, i1;
 
-			for(i=m_IExp.begin(); i!=m_IExp.end(); i++)
+			for(i=expected_frequency.begin(); i!=expected_frequency.end(); i++)
 			{
-				for(i1=m_IObs.begin(); i1!=m_IObs.end(); i1++)
+				for(i1=observed_frequency.begin(); i1!=observed_frequency.end(); i1++)
 				{
-					if((*i)->GetDigit()==iDigit && (*i1)->GetDigit()==iDigit)
+					if((*i)->get_digit()==digit && (*i1)->get_digit()== digit)
 					{
-						(*i)->SetSome(iExpected);
-						(*i1)->SetSome(iObserved);
+						(*i)->set_virtual(expected_frequency1);
+						(*i1)->set_virtual(observed_frequency1);
 					}
 				}
 			}
 		}
 
-		void writeToCout()
+		void write_to_cout()
 		{
-			list<CDigit*>::iterator i, i1;
+			list<Digit*>::iterator i, i1;
 
 			cout<<"The data is: "<<endl;
 			cout<<"Digit Exp Obs"<<endl;
 
-			for(i=m_IExp.begin(); i!=m_IExp.end(); i++)
+			for(i=expected_frequency.begin(); i!=expected_frequency.end(); i++)
 			{
-				for(i1=m_IObs.begin(); i1!=m_IObs.end(); i1++)
-				{ if((*i)->GetDigit()==(*i1)->GetDigit()) cout<<(*i)->GetDigit()<<"     " <<(*i)->GetSome()<< "   "<<(*i1)->GetSome()<<endl; }
+				for(i1=observed_frequency.begin(); i1!=observed_frequency.end(); i1++)
+				{ if((*i)->get_digit()==(*i1)->get_digit()) cout<<(*i)->get_digit()<<"     "<<(*i)->get_virtual()<<"   "<<(*i1)->get_virtual()<<endl; }
 			}
 			cout<<endl;
 		}
 
-		bool isFoundExpNumber(int iToFind)
+		bool find_expected_number(int expected_number)
 		{
 
-			while(iToFind<=0)
+			while(expected_number<=0)
 			{
 				cout<<"Enter a number bigger than 0: ";
-				cin>>iToFind;
+				cin>>expected_number;
 			}
 
-			list<CDigit*>::iterator i;
+			list<Digit*>::iterator i;
 			cout<<"The matching result is: ";
 
-			for(i=m_IExp.begin(); i!=m_IExp.end(); i++)
-			{ if((*i)->GetDigit()==iToFind) cout<<(*i)->GetDigit()<<" "<<(*i)->GetSome()<<endl; }
+			for(i=expected_frequency.begin(); i!=expected_frequency.end(); i++)
+			{ if((*i)->get_digit()==expected_number) cout<<(*i)->get_digit()<<" "<<(*i)->get_virtual()<<endl; }
 			cout<<endl;
-			return iToFind;
+			return expected_number;
 		}
 
-		int GetTotalFreqDiff() { return m_iTotalFreqDiff; }
+		int get_total_frequency_difference() { return total_frequency_difference; }
 };
 
 int main(void)
 {
-	CGoodnessOfFit a("goodnessExp.txt", "goodnessObs.txt");
-	a.writeToCout();
-	a.isFoundExpNumber(4);
-	a.calcTotalFreqDiff();
-	a.CalcChi();
-	a.CalcGofF();
-	a.setData(4, 16, 15);
-	a.writeToCout();
+	GoodnessOfFit goodness_of_fit("goodnessExp.txt", "goodnessObs.txt");
+	goodness_of_fit.write_to_cout();
+	goodness_of_fit.find_expected_number(4);
+	goodness_of_fit.get_total_frequency_difference();
+	goodness_of_fit.calculate_statistical_grade();
+	goodness_of_fit.check_statistical_grade();
+	goodness_of_fit.set_data(4, 16, 15);
+	goodness_of_fit.write_to_cout();
 	system("pause");
 }
